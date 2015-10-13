@@ -44,7 +44,7 @@ section#index {
   transition: all 0.15s;
 }
 #index input.invalid + label {
-  color: #F66;;
+  color: #F66;
 }
 #index label {
   display: block;
