@@ -75,15 +75,8 @@ function update(type) {
 }
 
 function refresh() {
-<<<<<<< HEAD
   setTimeout(function () {
     update(0)
     refresh()
   }, 1000)
-=======
-	setTimeout(function () {
-		update(0)
-		refresh()
-	}, 1000)
->>>>>>> 59d554add772c779daf469fcfa53d377ce2f4aca
 }
