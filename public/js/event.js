@@ -1,14 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-<<<<<<< HEAD
-=======
-
-	var userAgent = window.navigator.userAgent;
-	if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
-		if(confirm("Would you like to open this event in the iOS app?")) {
-			document.location.href = "clickityclack://"+eventid;
-		}
-	}
->>>>>>> 59d554add772c779daf469fcfa53d377ce2f4aca
 
   var userAgent = window.navigator.userAgent;
   if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
