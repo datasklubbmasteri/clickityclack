@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-
-  var userAgent = window.navigator.userAgent;
+  var userAgent = window.navigator.userAgent
   if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
-    if(confirm("Would you like to open this event in the iOS app?")) {
-      document.location.href = "clickityclack://"+eventid;
+    if(confirm('Would you like to open this event in the iOS app?')) {
+      document.location.href = 'clickityclack://'+eventid
     }
   }
 
@@ -58,7 +57,7 @@ function update(type) {
       cur = parseInt(response.count)
 
       if (guess != response.count) {
-        if (verb != "GET") {
+        if (verb != 'GET') {
           document.getElementById('count').textContent = response.count
         } else {
           guess = response.count
@@ -70,7 +69,7 @@ function update(type) {
   }
 
   xmlhttp.open(verb, eventid+'/'+route)
-  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+  xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
   xmlhttp.send()
 }
 
