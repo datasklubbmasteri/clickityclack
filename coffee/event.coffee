@@ -66,6 +66,11 @@ document.addEventListener 'DOMContentLoaded', ->
 
   document.getElementById('decrement').addEventListener 'click', ->
     update -1
+  document.addEventListener 'keydown', (e) ->
+    if e.which == 38 && !document.getElementById('increment').disabled
+      update 1
+    else if e.which == 40 && !document.getElementById('decrement').disabled
+      update -1
 
   refresh()
   update 0
