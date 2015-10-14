@@ -1,3 +1,7 @@
+guess = 0
+cap = 0
+cur = 0
+
 update = (type) ->
   verb = 'GET'
   route = 'get'
@@ -54,21 +58,14 @@ document.addEventListener 'DOMContentLoaded', ->
     if confirm('Would you like to open this event in the iOS app?')
       document.location.href = 'clickityclack://' + eventid
 
-  document.getElementById('increment').onclick = ->
+  document.getElementById('increment').addEventListener 'click', ->
     update 1
-    return
 
-  document.getElementById('label').onclick = ->
+  document.getElementById('label').addEventListener 'click', ->
     update 0
-    return
 
-  document.getElementById('decrement').onclick = ->
+  document.getElementById('decrement').addEventListener 'click', ->
     update -1
-    return
 
   refresh()
   update 0
-  return
-guess = undefined
-cap = undefined
-cur = undefined
