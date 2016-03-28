@@ -59,21 +59,26 @@ p#maintext {
 }
 
 /* EVENT PAGE */
+section#topbtn {
+  background-color: #8AC651;
+}
+
 section#botbtn {
-  /*background: red;*/
+  background-color: #F16667;
 }
 
 section#topbtn, section#botbtn {
-  height: 40vh;
+  height: 50vh;
   position: relative;
 }
 #increment, #decrement {
   display: block;
   position: absolute;
-  height: 40vh;
+  height: 50vh;
   width: 100%;
   outline: none;
   border: none;
+  padding: 0;
   background: none;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
@@ -82,47 +87,49 @@ section#topbtn, section#botbtn {
   -webkit-filter: grayscale(100%);
           filter: grayscale(100%);
 }
-#increment {
-  margin-top: 30vh;
-  bottom: 0;
-}
-#decrement {
-  margin-bottom: 10vh;
-  top: 0;
-}
 
 #top-image {
-  margin-top: 20vh;
+  margin-top: 10vh;
   background-image: url('../resources/increment.svg');
+  -webkit-filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+  pointer-events: none;
 }
 
 #bottom-image {
-  margin-bottom: 20vh;
+  margin-bottom: 10vh;
   background-image: url('../resources/decrement.svg');
+  -webkit-filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+  pointer-events: none;
 }
 
 #top-image, #bottom-image {
   width: 100%;
-  height: 50%;
+  height: 40%;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
+  position: relative;
+  z-index: 999;
 }
 
 section#label {
   height: 20vh;
+  width: 100%;
   line-height: 20vh;
   vertical-align: middle;
+  pointer-events: none;
+  position: absolute;
+  top: 40vh;
+  z-index: 999;
 }
 
 p#count {
-  font-weight: 100;
+  font-weight: 600;
   font-size: 12.5vh;
   margin: 0;
   cursor: pointer;
-
-  position: relative;
-  top: 0px;
+  color: white;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
 table {
@@ -172,4 +179,31 @@ a::after {
 
 ::selection {
   display: none;
+}
+
+.ripple{
+  overflow:hidden;
+}
+
+.ripple-effect{
+  position: absolute;
+  width: 100%;
+  height: 1vh;
+  background: white;
+  pointer-events: none;
+  animation: ripple-animation;
+  animation-duration: 1000ms;
+  animation-timing-function: ease-out;
+}
+
+
+@keyframes ripple-animation {
+    from {
+      transform: scaleY(1);
+      opacity: 0.4;
+    }
+    to {
+      transform: scaleY(100);
+      opacity: 0;
+    }
 }

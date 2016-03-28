@@ -20,7 +20,7 @@
 </head>
 <body>
   <section id="topbtn">
-    <button id="increment" name="up">
+    <button id="increment" name="up" class="ripple" data-ripple-color="green">
       <div id="top-image"></div>
     </button>
   </section>
@@ -28,9 +28,44 @@
     <p id="count"><%= item.count %></p>
   </section>
   <section id="botbtn">
-    <button id="decrement" name="down">
+    <button id="decrement" name="down" class="ripple" data-ripple-color="red">
       <div id="bottom-image"></div>
     </button>
   </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script type="text/javascript">
+  (function (window, $) {
+
+    $(function() {
+
+
+      $('.ripple').on('click', function (event) {
+        event.preventDefault();
+        console.log(event);
+        var $div = $('<div/>');
+        $div.addClass('ripple-effect');
+
+        var topDistance = '0%';
+        if (event.target.id !== 'decrement') {
+          topDistance = '100%'
+        }
+
+        $div
+        .css({
+          top: topDistance,
+          background: $(this).data("ripple-color")
+        })
+        .appendTo($(this));
+
+        window.setTimeout(function(){
+          $div.remove();
+        }, 1000);
+      });
+
+    });
+
+  })(window, jQuery);
+  </script>
 </body>
 </html>
