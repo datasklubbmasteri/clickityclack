@@ -33,39 +33,35 @@
     </button>
   </section>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript">
-  (function (window, $) {
 
-    $(function() {
+      var rippleElements = document.getElementsByClassName("ripple");
 
+      var rippleEffect = function(event){
+        var sender = this;
 
-      $('.ripple').on('click', function (event) {
-        event.preventDefault();
-        console.log(event);
-        var $div = $('<div/>');
-        $div.addClass('ripple-effect');
+        var div = document.createElement('div');
+        div.className = 'ripple-effect';
 
         var topDistance = '0%';
         if (event.target.id !== 'decrement') {
           topDistance = '100%'
         }
 
-        $div
-        .css({
-          top: topDistance,
-          background: $(this).data("ripple-color")
-        })
-        .appendTo($(this));
+        div.style.top = topDistance;
+        div.style.background = sender.dataset.rippleColor;
+
+        sender.appendChild(div);
 
         window.setTimeout(function(){
-          $div.remove();
+          sender.removeChild(div);
         }, 1000);
-      });
+      };
 
-    });
+      for (var i = 0; i < rippleElements.length; i++) {
+        rippleElements[i].addEventListener('click', rippleEffect, false);
+      }
 
-  })(window, jQuery);
   </script>
 </body>
 </html>
