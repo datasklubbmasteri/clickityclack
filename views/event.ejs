@@ -32,7 +32,7 @@
       <div id="bottom-image"></div>
     </button>
   </section>
-
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.6/hammer.min.js"></script>
   <script type="text/javascript">
 
       var rippleElements = document.getElementsByClassName("ripple");
@@ -62,6 +62,16 @@
         rippleElements[i].addEventListener('click', rippleEffect, false);
       }
 
+  </script>
+  <script type="text/javascript">
+    var swipeController = new Hammer(document);
+    swipeController.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+    swipeController.on('swipeup', function(ev) {
+      document.getElementById('increment').click();
+    });
+    swipeController.on('swipedown', function(ev) {
+      document.getElementById('decrement').click();
+    });
   </script>
 </body>
 </html>
