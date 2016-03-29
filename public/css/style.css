@@ -94,11 +94,17 @@ section#topbtn, section#botbtn {
 #top-image {
   margin-top: 20vh;
   background-image: url('../resources/increment.svg');
+  -webkit-filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+          filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+  pointer-events: none;
 }
 
 #bottom-image {
   margin-bottom: 20vh;
   background-image: url('../resources/decrement.svg');
+  -webkit-filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+          filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+  pointer-events: none;
 }
 
 #top-image, #bottom-image {
@@ -120,9 +126,30 @@ p#count {
   font-size: 12.5vh;
   margin: 0;
   cursor: pointer;
-
   position: relative;
   top: 0px;
+  color: white;
+  -webkit-filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+          filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+}
+
+section#eventname {
+  width: 100%;
+  vertical-align: middle;
+  pointer-events: none;
+  position: absolute;
+  z-index: 999;
+  top: 5vh;
+}
+
+p#name {
+  font-weight: 300;
+  font-size: 8vmin;
+  margin: 0;
+  cursor: pointer;
+  color: white;
+  -webkit-filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+          filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
 }
 
 table {
