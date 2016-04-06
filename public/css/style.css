@@ -208,14 +208,14 @@ a::after {
   height: 1vh;
   background: white;
   pointer-events: none;
-  animation: ripple-animation 1000ms ease-out;
+  animation: ripple-animation 500ms ease-out;
 }
 
 
 @keyframes ripple-animation {
     from {
       transform: scaleY(1);
-      opacity: 0.4;
+      opacity: 1.0;
     }
     to {
       transform: scaleY(100);
