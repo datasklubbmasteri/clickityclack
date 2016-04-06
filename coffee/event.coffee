@@ -1,6 +1,7 @@
 guess = 0
 cap = 0
 cur = 0
+timer = null
 
 update = (type) ->
   verb = 'GET'
@@ -76,16 +77,19 @@ document.addEventListener 'DOMContentLoaded', ->
     if e.which == 38 && !document.getElementById('increment').disabled
       update 1
       rippleEffect document.getElementById('increment')
+      updateHistory document.getElementById('increment')
+
     else if e.which == 40 && !document.getElementById('decrement').disabled
       update -1
       rippleEffect document.getElementById('decrement')
+      updateHistory document.getElementById('decrement')
 
   refresh()
   update 0
 
 updateHistory = (element) ->
+  window.clearTimeout(timer)
   current = parseInt document.getElementById('history').innerHTML
-  console.log current
   if element.id == 'increment'
     ++current
   else
@@ -93,23 +97,9 @@ updateHistory = (element) ->
   if current > 0
     current = "+" + current
   document.getElementById('history').innerHTML = current
-  window.setTimeout (->
+  timer = window.setTimeout (->
     document.getElementById('history').innerHTML = 0
-    return
   ), 3000
-  console.log current
-  # n = document.createElement 'span'
-
-
-anim = (element) ->
-  entry = document.createElement 'entry'
-  entry.className = element.id
-  console.log entry
-  symbol = if element.id == 'increment' then '+' else '-'
-  entry.innerHTML = symbol
-  document.getElementById('history').appendChild entry
-  # div.style
-  # elemtn.append
 
 rippleEffect = (element) ->
   div = document.createElement('div')
@@ -119,6 +109,4 @@ rippleEffect = (element) ->
   element.appendChild div
   window.setTimeout (->
     element.removeChild div
-    return
-  ), 1000
-  return
+  ), 500
