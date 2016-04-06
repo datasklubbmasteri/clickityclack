@@ -27,7 +27,7 @@ update = (type) ->
   xmlhttp.onreadystatechange = ->
     if xmlhttp.readyState == 4 and xmlhttp.status == 200
       response = JSON.parse(xmlhttp.responseText)
-      console.log response.count
+      # console.log response.count
       cap = parseInt(response.cap)
       cur = parseInt(response.count)
       if guess != response.count
@@ -53,24 +53,42 @@ refresh = ->
   return
 
 document.addEventListener 'DOMContentLoaded', ->
-  userAgent = window.navigator.userAgent
-  if userAgent.match(/iPad/i) or userAgent.match(/iPhone/i)
-    if confirm('Would you like to open this event in the iOS app?')
-      document.location.href = 'clickityclack://' + eventid
+  # No iOS app exists yet.
+  # userAgent = window.navigator.userAgent
+  # if userAgent.match(/iPad/i) or userAgent.match(/iPhone/i)
+  #   if confirm('Would you like to open this event in the iOS app?')
+  #     document.location.href = 'clickityclack://' + eventid
 
-  document.getElementById('increment').addEventListener 'click', ->
+  document.getElementById('increment').addEventListener 'click', (event) ->
     update 1
+    rippleEffect event.target
 
   document.getElementById('label').addEventListener 'click', ->
     update 0
 
-  document.getElementById('decrement').addEventListener 'click', ->
+  document.getElementById('decrement').addEventListener 'click', (event) ->
     update -1
+    rippleEffect event.target
+
   document.addEventListener 'keydown', (e) ->
     if e.which == 38 && !document.getElementById('increment').disabled
       update 1
+      rippleEffect document.getElementById('increment')
     else if e.which == 40 && !document.getElementById('decrement').disabled
       update -1
+      rippleEffect document.getElementById('decrement')
 
   refresh()
   update 0
+
+rippleEffect = (element) ->
+  div = document.createElement('div')
+  div.className = 'ripple-effect'
+  div.style.top = if element.id == 'decrement' then '0%' else '100%'
+  div.style.background = element.dataset.rippleColor
+  element.appendChild div
+  window.setTimeout (->
+    element.removeChild div
+    return
+  ), 1000
+  return
