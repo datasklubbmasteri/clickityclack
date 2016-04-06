@@ -62,6 +62,7 @@ document.addEventListener 'DOMContentLoaded', ->
   document.getElementById('increment').addEventListener 'click', (event) ->
     update 1
     rippleEffect event.target
+    updateHistory event.target
 
   document.getElementById('label').addEventListener 'click', ->
     update 0
@@ -69,6 +70,7 @@ document.addEventListener 'DOMContentLoaded', ->
   document.getElementById('decrement').addEventListener 'click', (event) ->
     update -1
     rippleEffect event.target
+    updateHistory event.target
 
   document.addEventListener 'keydown', (e) ->
     if e.which == 38 && !document.getElementById('increment').disabled
@@ -80,6 +82,34 @@ document.addEventListener 'DOMContentLoaded', ->
 
   refresh()
   update 0
+
+updateHistory = (element) ->
+  current = parseInt document.getElementById('history').innerHTML
+  console.log current
+  if element.id == 'increment'
+    ++current
+  else
+    --current
+  if current > 0
+    current = "+" + current
+  document.getElementById('history').innerHTML = current
+  window.setTimeout (->
+    document.getElementById('history').innerHTML = 0
+    return
+  ), 3000
+  console.log current
+  # n = document.createElement 'span'
+
+
+anim = (element) ->
+  entry = document.createElement 'entry'
+  entry.className = element.id
+  console.log entry
+  symbol = if element.id == 'increment' then '+' else '-'
+  entry.innerHTML = symbol
+  document.getElementById('history').appendChild entry
+  # div.style
+  # elemtn.append
 
 rippleEffect = (element) ->
   div = document.createElement('div')
