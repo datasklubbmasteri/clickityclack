@@ -17,10 +17,17 @@
     var cap = <%= item.cap %>
   </script>
   <script type="text/javascript" src="/js/event.js"></script>
+
+  <!-- Hammer.js for swipe-to-click on mobile -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.6/hammer.min.js"></script>
+  <script type="text/javascript" src="/js/swipe.js"></script>
 </head>
 <body>
+  <section id="eventname">
+    <p id="name"><%= item.name %></p>
+  </section>
   <section id="topbtn">
-    <button id="increment" name="up">
+    <button id="increment" name="up" class="ripple" data-ripple-color="green">
       <div id="top-image"></div>
     </button>
   </section>
@@ -28,7 +35,7 @@
     <p id="count"><%= item.count %></p>
   </section>
   <section id="botbtn">
-    <button id="decrement" name="down">
+    <button id="decrement" name="down" class="ripple" data-ripple-color="red">
       <div id="bottom-image"></div>
     </button>
   </section>
