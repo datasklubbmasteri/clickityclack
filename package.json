@@ -1,6 +1,6 @@
 {
   "name": "ClickityClack",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": "true",
   "dependencies": {
     "coffee-script": "*",
@@ -8,5 +8,8 @@
     "ejs": "*",
     "mongodb": "~2.0",
     "body-parser": "~1.9.2"
+  }, 
+  "scripts": {
+    "postinstall": "coffee --compile --output public/js coffee/"
   }
 }
