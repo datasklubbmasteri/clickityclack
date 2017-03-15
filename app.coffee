@@ -42,10 +42,12 @@ app.post '/create', (request, response) ->
     'name': request.body.name
     'count': 0
     'cap': request.body.cap
+    'public': request.body.public
     'date': new Date()
   db.collection 'events', (error, collection) ->
     collection.insert newEvent, { w: 1 }
   response.json newEvent
+
 
 # Get an event
 app.get '/:event/get', (request, response) ->

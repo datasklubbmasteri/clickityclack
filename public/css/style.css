@@ -54,6 +54,11 @@ p#maintext {
   margin-top: 10vh;
 }
 
+#publicfield {
+  transform: scale(2);
+  padding: 1rem;
+}
+
 /* EVENT PAGE */
 section#topbtn {
   background-color: #8AC651;
