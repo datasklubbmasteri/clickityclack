@@ -9,6 +9,7 @@ http = require('http')
 debug = require('util').debug
 inspect = require('util').inspect
 bodyParser = require('body-parser')
+socketio = require('socket.io')
 
 app = express()
 
@@ -65,6 +66,7 @@ app.post '/:event/increment', (request, response) ->
       else if item.count < item.cap
         collection.update { _id: request.params.event }, { $inc: count: 1 }, (error, numberOfUpdatedObjects) ->
           collection.findOne { _id: request.params.event }, (error, item) ->
+            pushUpdate request.params.event, item.count
             response.json item
       else
         response.json item
@@ -78,6 +80,7 @@ app.post '/:event/decrement', (request, response) ->
       else if item.count > 0
         collection.update { _id: request.params.event }, { $inc: count: -1 }, (error, numberOfUpdatedObjects) ->
           collection.findOne { _id: request.params.event }, (error, item) ->
+            pushUpdate request.params.event, item.count
             response.json item
       else
         response.json item
@@ -110,6 +113,30 @@ server = app.listen(webport, ->
   port = server.address().port
   console.log 'ClickityClack listening at http://%s:%s', host, port
 )
+
+serversocket = socketio.listen(server)
+serversocket.on 'connection', (socket) ->
+  socket.on 'join', (request) ->
+    socket.join(request.event)
+
+  socket.on 'increment', (request) ->
+    db.collection 'events', (error, collection) ->
+      collection.findOne { _id: request.event }, (error, item) ->
+        if item != null && item.count < item.cap
+          collection.update { _id: request.event }, { $inc: count: 1 }, (error, numberOfUpdatedObjects) ->
+            collection.findOne { _id: request.event }, (error, item) ->
+              pushUpdate request.event, item.count
+
+  socket.on 'decrement', (request) ->
+    db.collection 'events', (error, collection) ->
+      collection.findOne { _id: request.event }, (error, item) ->
+        if item != null && item.count > 0
+          collection.update { _id: request.event }, { $inc: count: -1 }, (error, numberOfUpdatedObjects) ->
+            collection.findOne { _id: request.event }, (error, item) ->
+              pushUpdate request.event, item.count
+
+pushUpdate = (event, count) ->
+  serversocket.to(event).emit 'update', count: count
 
 # Additional functions
 randomString = ->
