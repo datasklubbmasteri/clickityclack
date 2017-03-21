@@ -1,10 +1,19 @@
 socket = io().connect()
-socket.emit 'join', event: eventid
+
+socket.on 'connect', ->
+  socket.emit 'join', event: eventid
+  document.getElementById('increment').disabled = count >= cap
+  document.getElementById('decrement').disabled = count <= 0
+
+socket.on 'disconnect', ->
+  document.getElementById('increment').disabled = true
+  document.getElementById('decrement').disabled = true
 
 socket.on 'update', (data) ->
-  document.getElementById('count').textContent = data.count
-  document.getElementById('increment').disabled = data.count >= cap
-  document.getElementById('decrement').disabled = data.count <= 0
+  count = data.count
+  document.getElementById('count').textContent = count
+  document.getElementById('increment').disabled = count >= cap
+  document.getElementById('decrement').disabled = count <= 0
 
 increment = ->
     socket.emit('increment', event: eventid)
@@ -20,8 +29,6 @@ document.addEventListener 'DOMContentLoaded', ->
   # if userAgent.match(/iPad/i) or userAgent.match(/iPhone/i)
   #   if confirm('Would you like to open this event in the iOS app?')
   #     document.location.href = 'clickityclack://' + eventid
-  document.getElementById('increment').disabled = cur >= cap
-  document.getElementById('decrement').disabled = cur <= 0
 
   document.getElementById('increment').addEventListener 'click', (event) ->
     increment()
