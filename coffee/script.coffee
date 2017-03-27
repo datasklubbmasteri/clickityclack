@@ -1,6 +1,7 @@
 document.addEventListener 'DOMContentLoaded', ->
   numfield = document.getElementById('numberfield')
   namefield = document.getElementById('namefield')
+  pubfield = document.getElementById('publicfield')
   namefield.addEventListener 'keydown', (e) ->
     if e.which == 13 and !numfield.classList.contains('invalid') and !namefield.classList.contains('invalid')
       xmlhttp = new XMLHttpRequest
@@ -14,7 +15,8 @@ document.addEventListener 'DOMContentLoaded', ->
       xmlhttp.setRequestHeader 'Content-Type', 'application/json;charset=UTF-8'
       xmlhttp.send JSON.stringify(
         name: namefield.value
-        cap: numfield.value)
+        cap: numfield.value
+        public: pubfield.checked)
 
   namefield.addEventListener 'input', (e) ->
     if namefield.value == ''

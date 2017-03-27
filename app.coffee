@@ -42,10 +42,21 @@ app.post '/create', (request, response) ->
     'name': request.body.name
     'count': 0
     'cap': request.body.cap
+    'public': request.body.public
     'date': new Date()
   db.collection 'events', (error, collection) ->
     collection.insert newEvent, { w: 1 }
   response.json newEvent
+
+# Get all events (JSON)
+app.get '/events/get', (request, response) ->
+  db.collection 'events', (error, collection) ->
+    collection.find({public: true}, { _id: 0 }).toArray (error, items) ->
+      if items == null
+        response.json 'error': -1
+      else
+        items.reverse()
+        response.json items
 
 # Get an event
 app.get '/:event/get', (request, response) ->
@@ -85,7 +96,7 @@ app.post '/:event/decrement', (request, response) ->
 # view all events
 app.get '/events', (request, response) ->
   db.collection 'events', (error, collection) ->
-    collection.find({}).toArray (error, items) ->
+    collection.find({public: true}).toArray (error, items) ->
       if items == null
         response.json 'error': -1
       else
