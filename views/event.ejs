@@ -10,10 +10,12 @@
 
   <title><%= item.name %> | ClickityClack</title>
 
+  <!-- Socket.io  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
   <script type="text/javascript">
     var eventid = '<%= item._id %>';
-    var prevcount = <%= item.count %>;
-    var cur = <%= item.count %>;
+    var count = <%= item.count %>;
     var cap = <%= item.cap %>
   </script>
   <script type="text/javascript" src="/js/event.js"></script>
@@ -27,7 +29,7 @@
     <p id="name"><%= item.name %></p>
   </section>
   <section id="topbtn">
-    <button id="increment" name="up" class="ripple" data-ripple-color="green">
+    <button id="increment" name="up" class="ripple" data-ripple-color="green" disabled>
       <div id="top-image"></div>
     </button>
   </section>
@@ -35,7 +37,7 @@
     <p id="count"><%= item.count %></p>
   </section>
   <section id="botbtn">
-    <button id="decrement" name="down" class="ripple" data-ripple-color="red">
+    <button id="decrement" name="down" class="ripple" data-ripple-color="red" disabled>
       <div id="bottom-image"></div>
     </button>
   </section>

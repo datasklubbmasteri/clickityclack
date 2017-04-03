@@ -1,56 +1,27 @@
-guess = 0
-cap = 0
-cur = 0
+socket = io().connect()
 
-update = (type) ->
-  verb = 'GET'
-  route = 'get'
-  document.getElementById('increment').disabled = cur >= cap
-  document.getElementById('decrement').disabled = cur <= 0
-  guess = cur
-  if type != 0
-    verb = 'POST'
-    if type > 0
-      route = 'increment'
-      guess++
-      document.getElementById('count').textContent = cur + 1
-      document.getElementById('decrement').disabled = false
-      document.getElementById('increment').disabled = cur + 1 >= cap
-    else
-      route = 'decrement'
-      guess--
-      document.getElementById('count').textContent = cur - 1
-      document.getElementById('increment').disabled = false
-      document.getElementById('decrement').disabled = cur - 1 <= 0
-  xmlhttp = new XMLHttpRequest
+socket.on 'connect', ->
+  socket.emit 'join', event: eventid
+  document.getElementById('increment').disabled = count >= cap
+  document.getElementById('decrement').disabled = count <= 0
 
-  xmlhttp.onreadystatechange = ->
-    if xmlhttp.readyState == 4 and xmlhttp.status == 200
-      response = JSON.parse(xmlhttp.responseText)
-      # console.log response.count
-      cap = parseInt(response.cap)
-      cur = parseInt(response.count)
-      if guess != response.count
-        if verb != 'GET'
-          document.getElementById('count').textContent = response.count
-        else
-          guess = response.count
-      else
-        document.getElementById('count').textContent = response.count
-    return
+socket.on 'disconnect', ->
+  document.getElementById('increment').disabled = true
+  document.getElementById('decrement').disabled = true
 
-  xmlhttp.open verb, eventid + '/' + route
-  xmlhttp.setRequestHeader 'Content-Type', 'application/json;charset=UTF-8'
-  xmlhttp.send()
-  return
+socket.on 'update', (data) ->
+  count = data.count
+  document.getElementById('count').textContent = count
+  document.getElementById('increment').disabled = count >= cap
+  document.getElementById('decrement').disabled = count <= 0
 
-refresh = ->
-  setTimeout (->
-    update 0
-    refresh()
-    return
-  ), 1000
-  return
+increment = ->
+    socket.emit('increment', event: eventid)
+    rippleEffect document.getElementById('increment')
+
+decrement = ->
+    socket.emit('decrement', event: eventid)
+    rippleEffect document.getElementById('decrement')
 
 document.addEventListener 'DOMContentLoaded', ->
   # No iOS app exists yet.
@@ -60,26 +31,16 @@ document.addEventListener 'DOMContentLoaded', ->
   #     document.location.href = 'clickityclack://' + eventid
 
   document.getElementById('increment').addEventListener 'click', (event) ->
-    update 1
-    rippleEffect event.target
-
-  document.getElementById('label').addEventListener 'click', ->
-    update 0
+    increment()
 
   document.getElementById('decrement').addEventListener 'click', (event) ->
-    update -1
-    rippleEffect event.target
+    decrement()
 
   document.addEventListener 'keydown', (e) ->
     if e.which == 38 && !document.getElementById('increment').disabled
-      update 1
-      rippleEffect document.getElementById('increment')
+      increment()
     else if e.which == 40 && !document.getElementById('decrement').disabled
-      update -1
-      rippleEffect document.getElementById('decrement')
-
-  refresh()
-  update 0
+      decrement()
 
 rippleEffect = (element) ->
   div = document.createElement('div')
