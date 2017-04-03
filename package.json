@@ -11,6 +11,7 @@
     "socket.io": "^1.7.3"
   },
   "scripts": {
+    "start": "coffee app.coffee",
     "build": "coffee --compile --output public/js coffee/",
     "watch": "coffee --compile --watch --output public/js coffee/",
     "postinstall": "npm run build"
