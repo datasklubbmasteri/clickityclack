@@ -1,26 +1,37 @@
 socket = io().connect()
 
+guessCount = count
+pendingUpdates = 0
+
 socket.on 'connect', ->
   socket.emit 'join', event: eventid
-  document.getElementById('increment').disabled = count >= cap
-  document.getElementById('decrement').disabled = count <= 0
+  document.getElementById('increment').disabled = guessCount >= cap
+  document.getElementById('decrement').disabled = guessCount <= 0
 
 socket.on 'disconnect', ->
   document.getElementById('increment').disabled = true
   document.getElementById('decrement').disabled = true
 
-socket.on 'update', (data) ->
-  count = data.count
-  document.getElementById('count').textContent = count
-  document.getElementById('increment').disabled = count >= cap
-  document.getElementById('decrement').disabled = count <= 0
+socket.on 'update', (payload) ->
+  pendingUpdates = Math.max(--pendingUpdates, 0)
+  if (pendingUpdates <= 0)
+    guessCount = payload.count
+    document.getElementById('count').textContent = payload.count
+    document.getElementById('increment').disabled = payload.count >= cap
+    document.getElementById('decrement').disabled = payload.count <= 0
 
 increment = ->
     socket.emit('increment', event: eventid)
+    pendingUpdates++
+    document.getElementById('count').textContent = ++guessCount
+    document.getElementById('increment').disabled = guessCount >= cap
     rippleEffect document.getElementById('increment')
 
 decrement = ->
     socket.emit('decrement', event: eventid)
+    pendingUpdates++
+    document.getElementById('count').textContent = --guessCount
+    document.getElementById('decrement').disabled = guessCount <= 0
     rippleEffect document.getElementById('decrement')
 
 document.addEventListener 'DOMContentLoaded', ->
