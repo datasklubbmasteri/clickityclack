@@ -1,27 +1,39 @@
 socket = io().connect()
 
+guessCount = count
+pendingUpdates = 0
+incrementButton = undefined
+decrementButton = undefined
+countLabel = undefined
+
 socket.on 'connect', ->
   socket.emit 'join', event: eventid
-  document.getElementById('increment').disabled = count >= cap
-  document.getElementById('decrement').disabled = count <= 0
+  updateButtonStates()
 
 socket.on 'disconnect', ->
-  document.getElementById('increment').disabled = true
-  document.getElementById('decrement').disabled = true
+  incrementButton.disabled = true
+  decrementButton.disabled = true
 
-socket.on 'update', (data) ->
-  count = data.count
-  document.getElementById('count').textContent = count
-  document.getElementById('increment').disabled = count >= cap
-  document.getElementById('decrement').disabled = count <= 0
+socket.on 'update', (payload) ->
+  pendingUpdates = Math.max --pendingUpdates, 0
+  if pendingUpdates <= 0
+    guessCount = payload.count
+    updateCountLabel payload.count
+    updateButtonStates()
 
 increment = ->
-    socket.emit('increment', event: eventid)
-    rippleEffect document.getElementById('increment')
+    socket.emit 'increment', event: eventid
+    pendingUpdates++
+    updateCountLabel ++guessCount
+    updateButtonStates()
+    rippleEffect incrementButton
 
 decrement = ->
-    socket.emit('decrement', event: eventid)
-    rippleEffect document.getElementById('decrement')
+    socket.emit 'decrement', event: eventid
+    pendingUpdates++
+    updateCountLabel --guessCount
+    updateButtonStates()
+    rippleEffect decrementButton
 
 document.addEventListener 'DOMContentLoaded', ->
   # No iOS app exists yet.
@@ -30,20 +42,31 @@ document.addEventListener 'DOMContentLoaded', ->
   #   if confirm('Would you like to open this event in the iOS app?')
   #     document.location.href = 'clickityclack://' + eventid
 
-  document.getElementById('increment').addEventListener 'click', (event) ->
+  incrementButton = document.getElementById 'increment'
+  decrementButton = document.getElementById 'decrement'
+  countLabel = document.getElementById 'count'
+
+  incrementButton.addEventListener 'click', (event) ->
     increment()
 
-  document.getElementById('decrement').addEventListener 'click', (event) ->
+  decrementButton.addEventListener 'click', (event) ->
     decrement()
 
   document.addEventListener 'keydown', (e) ->
-    if e.which == 38 && !document.getElementById('increment').disabled
+    if e.which == 38 && !incrementButton.disabled
       increment()
-    else if e.which == 40 && !document.getElementById('decrement').disabled
+    else if e.which == 40 && !decrementButton.disabled
       decrement()
 
+updateCountLabel = (count) ->
+  countLabel.textContent = count
+
+updateButtonStates = ->
+  incrementButton.disabled = guessCount >= cap
+  decrementButton.disabled = guessCount <= 0
+
 rippleEffect = (element) ->
-  div = document.createElement('div')
+  div = document.createElement 'div'
   div.className = 'ripple-effect'
   div.style.top = if element.id == 'decrement' then '0%' else '100%'
   div.style.background = element.dataset.rippleColor
