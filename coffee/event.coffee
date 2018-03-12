@@ -60,6 +60,7 @@ document.addEventListener 'DOMContentLoaded', ->
 
 updateCountLabel = (count) ->
   countLabel.textContent = count
+  document.title = "#{name} | #{count}/#{cap}"
 
 updateButtonStates = ->
   incrementButton.disabled = guessCount >= cap
